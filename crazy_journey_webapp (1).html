@@ -1,0 +1,130 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚡ Crazy Journey ⚡</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>✨ Welcome to Your Crazy Journey ✨</h1>
+    <input type="text" id="search" placeholder="Type anything and press Enter" />
+    <div id="canvas-container"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+/* style.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+#app {
+  text-align: center;
+  width: 100%;
+}
+h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+#search {
+  width: 80vw;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  margin-bottom: 1rem;
+}
+#canvas-container {
+  width: 100vw;
+  height: 60vh;
+}
+
+// script.js
+let currentInput = '';
+
+function setup() {
+  const container = document.getElementById('canvas-container');
+  const cnv = createCanvas(container.offsetWidth, container.offsetHeight);
+  cnv.parent('canvas-container');
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  noLoop();
+}
+
+function draw() {
+  clear();
+  if (!currentInput) drawDefault();
+  else drawDynamic();
+}
+
+function drawDefault() {
+  background(51);
+  fill(255);
+  text("Type anything and press Enter!", width / 2, height / 2);
+}
+
+function drawDynamic() {
+  const seed = hashString(currentInput);
+  randomSeed(seed);
+  // dynamic background
+  background(random(50, 200), random(50, 200), random(50, 200));
+  noStroke();
+  const len = currentInput.length;
+  for (let i = 0; i < 200; i++) {
+    const charCode = currentInput.charCodeAt(i % len);
+    const type = charCode % 3;
+    const x = random(width);
+    const y = random(height);
+    const s = random(10, 100);
+    fill(random(255), random(255), random(255), 150);
+    if (type === 0) circle(x, y, s);
+    else if (type === 1) rect(x, y, s, s);
+    else triangle(x, y, x + s, y, x + s / 2, y - s);
+  }
+  fill(255);
+  text(currentInput, width / 2, height * 0.9);
+}
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+}
+
+function windowResized() {
+  const container = document.getElementById('canvas-container');
+  resizeCanvas(container.offsetWidth, container.offsetHeight);
+  if (currentInput) redraw();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('search');
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      currentInput = e.target.value.trim();
+      redraw();
+      e.target.value = '';
+    }
+  });
+});
