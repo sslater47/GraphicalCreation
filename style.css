@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+#app {
+  text-align: center;
+  width: 100%;
+}
+h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+#search {
+  width: 80vw;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  margin-bottom: 1rem;
+}
+#canvas-container {
+  width: 100vw;
+  height: 60vh;
+}
